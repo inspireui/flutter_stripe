@@ -129,7 +129,9 @@ class _SetupFuturePaymentScreenState extends State<SetupFuturePaymentScreen> {
       final setupIntentResult = await Stripe.instance.confirmSetupIntent(
         clientSecret,
         PaymentMethodParams.card(
-          billingDetails: billingDetails,
+          paymentMethodData: PaymentMethodData(
+            billingDetails: billingDetails,
+          ),
         ),
       );
       log('Setup Intent created $setupIntentResult');
@@ -209,7 +211,9 @@ class _SetupFuturePaymentScreenState extends State<SetupFuturePaymentScreen> {
       await Stripe.instance.confirmPayment(
         _retrievedPaymentIntent!.clientSecret,
         PaymentMethodParams.cardFromMethodId(
-            paymentMethodId: _retrievedPaymentIntent!.paymentMethodId!),
+          paymentMethodData: PaymentMethodDataCardFromMethod(
+              paymentMethodId: _retrievedPaymentIntent!.paymentMethodId!),
+        ),
       );
     }
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

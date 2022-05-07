@@ -1,11 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:http/http.dart' as http;
+import 'package:pay/pay.dart' as pay;
 import 'package:stripe_example/config.dart';
 import 'package:stripe_example/widgets/example_scaffold.dart';
-import 'package:pay/pay.dart' as pay;
 
 const _paymentItems = [
   pay.PaymentItem(
@@ -71,12 +71,16 @@ class _ApplePayExternalPluginScreenState
       //debugPrint(paymentResult.toString());
       // 1. Get Stripe token from payment result
       final token = await Stripe.instance.createApplePayToken(paymentResult);
-      
+
       // 2. fetch Intent Client Secret from backend
       final response = await fetchPaymentIntentClientSecret();
       final clientSecret = response['clientSecret'];
 
-      final params = PaymentMethodParams.cardFromToken(token: token.id);
+      final params = PaymentMethodParams.cardFromToken(
+        paymentMethodData: PaymentMethodDataCardFromToken(
+          token: token.id,
+        ),
+      );
 
       // 3. Confirm Apple pay payment method
       await Stripe.instance.confirmPayment(clientSecret, params);
