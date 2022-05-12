@@ -19,6 +19,6 @@ class StripeAubecsDebitPlatformViewFactory(
     override fun create(context: Context, viewId: Int, args: Any?): PlatformView {
         val channel = MethodChannel(flutterPluginBinding.binaryMessenger, "flutter.stripe/aubecs_form_field/${viewId}")
         val creationParams = args as? Map<String?, Any?>?
-        return StripeAubecsDebitPlatformView(context, channel, viewId, creationParams, auBECSDebitFormViewManager, sdkAccessor)
+        return StripeAubecsDebitPlatformView(context!!, channel, viewId, creationParams, auBECSDebitFormViewManager, sdkAccessor)
     }
 }
