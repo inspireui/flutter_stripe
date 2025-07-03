@@ -15,7 +15,8 @@ class StripeInstance {
 
   Future<bool> isPlatformPaySupported({
     IsGooglePaySupportedParams? googlePay,
-  }) async => false;
+  }) async =>
+      false;
 
   Future<void> openApplePaySetup() async {}
 
@@ -166,4 +167,18 @@ class PaymentSheetPrimaryButtonThemeColors {
   Color? background;
 
   PaymentSheetPrimaryButtonThemeColors({this.background});
+}
+
+class StripeException implements Exception {
+  final String message;
+  final StripeError error;
+  StripeException({required this.message})
+      : error = StripeError(message: message);
+}
+
+class StripeError {
+  final String message;
+  StripeError({required this.message});
+
+  String? get localizedMessage => message;
 }
